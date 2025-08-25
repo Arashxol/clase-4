@@ -11,26 +11,32 @@ function crearWorker(fn) {
 }
 
 function workerPrimos(e) {
-  const limite = e.data;
+  const cantidad = e.data; 
   let primos = [];
-  let sieve = new Array(limite + 1).fill(true);
-  sieve[0] = sieve[1] = false; 
+  let num = 2;
 
-  for (let i = 2; i <= Math.sqrt(limite); i++) {
-    if (sieve[i]) {
-      for (let j = i * i; j <= limite; j += i) {
-        sieve[j] = false;
+  while (primos.length < cantidad) {
+    let esPrimo = true;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) {
+        esPrimo = false;
+        break;
       }
     }
+    if (esPrimo) {
+      primos.push(num);
+    }
+    num++;
   }
 
-  for (let i = 2; i <= limite; i++) {
-    if (sieve[i]) {
-      primos.push(i);
-    }
+  let resultado = "";
+  for (let i = 0; i < primos.length; i++) {
+    resultado += primos[i] + ( (i+1) % 10 === 0 ? "\n" : ", " );
   }
-  postMessage(primos.join(", "));
+
+  postMessage(resultado.trim());
 }
+
 
 function buscarPalabra(parrafo, palabra) {
   const palabras = parrafo.split(" ").sort();
